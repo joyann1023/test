@@ -302,7 +302,7 @@ class _MainState extends State<MainPage> {
     return ListView(
       children: [
         Container(
-          height: MediaQuery.of(context).size.height * 0.7,
+          // height: MediaQuery.of(context).size.height * 0.7,
           decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(
@@ -316,7 +316,7 @@ class _MainState extends State<MainPage> {
             child: TextField(
               controller: _inputController,
               scrollController: _scrollController,
-              maxLines: 999,
+              maxLines: 20,
               autofocus: true,
               decoration: InputDecoration.collapsed(
                 hintText: '粘贴抓取的HEX数据',
