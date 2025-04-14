@@ -96,96 +96,96 @@ class _MainState extends State<MainPage> {
         final encoded = serialize(result);
         offset += encoded.length;
         // 确保解码结果是 Map 类型
-        if (result is Map) {
-          print('result: $result');
-          var resultJson = jsonEncode(result);
+        // if (result is Map) {
+        print('result: $result');
+        var resultJson = jsonEncode(result);
 
-          log('resultJson: $resultJson');
+        log('resultJson: $resultJson');
 
-          final datamerge = result['result']['datamerge'];
-          soldierCapacity = datamerge['soldierCapacity'];
+        final datamerge = result['result']['datamerge'];
+        soldierCapacity = datamerge['soldierCapacity'];
 
-          if (datamerge != null && datamerge['soldiers'] != null) {
-            final soldiers = datamerge['soldiers'];
-            soldiers.forEach((key, soldier) {
-              // 提取需要的字段
-              final level = soldier['level'];
-              final quality = soldier['quality'];
-              final arm = soldier['arm'];
-              final powerQualification = soldier['power_qualification'];
-              final physiqueQualification = soldier['physique_qualification'];
-              final agileQualification = soldier['agile_qualification'];
-              final potentialQualification = soldier['potential_qualification'];
-              final basePowerQualification = soldier['base_power'];
-              final basePhysiqueQualification = soldier['base_physique'];
-              final baseAgileQualification = soldier['base_agile'];
-              final basePotentialQualification = soldier['base_potential'];
+        if (datamerge != null && datamerge['soldiers'] != null) {
+          final soldiers = datamerge['soldiers'];
+          soldiers.forEach((key, soldier) {
+            // 提取需要的字段
+            final level = soldier['level'];
+            final quality = soldier['quality'];
+            final arm = soldier['arm'];
+            final powerQualification = soldier['power_qualification'];
+            final physiqueQualification = soldier['physique_qualification'];
+            final agileQualification = soldier['agile_qualification'];
+            final potentialQualification = soldier['potential_qualification'];
+            final basePowerQualification = soldier['base_power'];
+            final basePhysiqueQualification = soldier['base_physique'];
+            final baseAgileQualification = soldier['base_agile'];
+            final basePotentialQualification = soldier['base_potential'];
 
-              final power = soldier['power'];
-              final physique = soldier['physique'];
-              final agile = soldier['agile'];
-              final intelligenct = soldier['intelligenct'];
-              final giveCount = soldier['count'];
+            final power = soldier['power'];
+            final physique = soldier['physique'];
+            final agile = soldier['agile'];
+            final intelligenct = soldier['intelligenct'];
+            final giveCount = soldier['count'];
 
-              // 跳过等级为 1 的士兵
-              if (level == 1) return;
+            // 跳过等级为 1 的士兵
+            if (level == 1) return;
 
-              // 新增计算字段 intelligenct_qualification
-              double intelligenctQualification = 0;
-              if (power != 0) {
-                intelligenctQualification =
-                    (powerQualification / power) * intelligenct;
-              }
+            // 新增计算字段 intelligenct_qualification
+            double intelligenctQualification = 0;
+            if (power != 0) {
+              intelligenctQualification =
+                  (powerQualification / power) * intelligenct;
+            }
 
-              // 颜色映射
-              final qualityMapping = {
-                'green': '绿',
-                'purple': '紫',
-                'orange': '橙',
-                'blue': '蓝',
-              };
-              final qualityColor = qualityMapping[quality] ?? '未知';
+            // 颜色映射
+            final qualityMapping = {
+              'green': '绿',
+              'purple': '紫',
+              'orange': '橙',
+              'blue': '蓝',
+            };
+            final qualityColor = qualityMapping[quality] ?? '未知';
 
-              // 兵种映射
-              final armMapping = {
-                'archer': '弓兵',
-                'rider': '骑兵',
-                'shielder': '盾兵',
-                'lancer': '枪兵',
-              };
-              final armType = armMapping[arm] ?? '未知';
+            // 兵种映射
+            final armMapping = {
+              'archer': '弓兵',
+              'rider': '骑兵',
+              'shielder': '盾兵',
+              'lancer': '枪兵',
+            };
+            final armType = armMapping[arm] ?? '未知';
 
-              // 只保存特定的字段
-              final extractedData = {
-                'level_等级': level,
-                'quality_品质': qualityColor,
-                'arm_兵种': armType,
-                'power_qualification_力量资质': powerQualification,
-                'physique_qualification_体质资质': physiqueQualification,
-                'agile_qualification_敏捷资质': agileQualification,
-                'potential_qualification_潜力资质': potentialQualification,
-                '力量资质_初始': basePowerQualification,
-                '体质资质_初始': basePhysiqueQualification,
-                '敏捷资质_初始': baseAgileQualification,
-                '潜力资质_初始': basePotentialQualification,
-                'intelligenct_qualification_慧根资质':
-                    intelligenctQualification.roundToDouble(),
-                'power_力量': power,
-                'physique_体质': physique,
-                'agile_敏捷': agile,
-                'intelligenct_慧根': intelligenct,
-                'count_剩余指点次数': giveCount,
-              };
+            // 只保存特定的字段
+            final extractedData = {
+              'level_等级': level,
+              'quality_品质': qualityColor,
+              'arm_兵种': armType,
+              'power_qualification_力量资质': powerQualification,
+              'physique_qualification_体质资质': physiqueQualification,
+              'agile_qualification_敏捷资质': agileQualification,
+              'potential_qualification_潜力资质': potentialQualification,
+              '力量资质_初始': basePowerQualification,
+              '体质资质_初始': basePhysiqueQualification,
+              '敏捷资质_初始': baseAgileQualification,
+              '潜力资质_初始': basePotentialQualification,
+              'intelligenct_qualification_慧根资质':
+                  intelligenctQualification.roundToDouble(),
+              'power_力量': power,
+              'physique_体质': physique,
+              'agile_敏捷': agile,
+              'intelligenct_慧根': intelligenct,
+              'count_剩余指点次数': giveCount,
+            };
 
-              // 添加到士兵数据列表
-              soldiersData.add(extractedData);
-            });
-          } else {
-            print('❌ 未找到士兵数据');
-          }
+            // 添加到士兵数据列表
+            soldiersData.add(extractedData);
+          });
         } else {
-          print('❌ 解码的结果不是一个有效的 Map 类型');
+          print('❌ 未找到士兵数据');
         }
+        // } else {
+        //   print('❌ 解码的结果不是一个有效的 Map 类型');
+        // }
 
         // final jsonString = const JsonEncoder.withIndent('  ').convert(result);
         // // buffer.writeln('📦 对象 ${++count}:');
@@ -292,7 +292,7 @@ class _MainState extends State<MainPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('hlsg士兵数据'),
+        title: Text('hlsg士兵数据1.1'),
       ),
       body: _mainWidget(),
     );
