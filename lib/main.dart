@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:convert';
 import 'dart:developer';
 
@@ -18,6 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false, //隐藏右上角的debug标签
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -39,7 +39,7 @@ class _MainState extends State<MainPage> {
   String _contentText = '';
   String _outputText = '';
 
-  String _fileNameText = '';
+  // String _fileNameText = '';
 
   @override
   void initState() {
@@ -87,7 +87,7 @@ class _MainState extends State<MainPage> {
     //   final file = File(filePath);
     //   if (!await file.exists()) {
     //     print('文件不存在: $filePath');
-    //     _showAlert('文件不存在');
+    //     _showSnackBar('文件不存在');
     //     return;
     //   }
     //   final rtfText = await file.readAsString();
@@ -101,26 +101,26 @@ class _MainState extends State<MainPage> {
     // }
   }
 
-  _readFileString(String fileName) async {
-    // 获取桌面路径（macOS 特定方式）
-    String desktopDir = '/Users/shijianyu/Desktop/ty';
+  // _readFileString(String fileName) async {
+  //   // 获取桌面路径（macOS 特定方式）
+  //   String desktopDir = '/Users/shijianyu/Desktop/ty';
 
-    // 读取文件路径
-    final pathStr = '$desktopDir/$fileName';
-    final file = File(pathStr);
-    if (!await file.exists()) {
-      print('文件不存在: $pathStr');
-      _showAlert('文件不存在');
-      return;
-    }
+  //   // 读取文件路径
+  //   final pathStr = '$desktopDir/$fileName';
+  //   final file = File(pathStr);
+  //   if (!await file.exists()) {
+  //     print('文件不存在: $pathStr');
+  //     _showSnackBar('文件不存在');
+  //     return;
+  //   }
 
-    // final pathStr = "lib/resources/tp_hex_soldier_data.txt";
-    // final rtfText = await rootBundle.loadString(pathStr);
+  //   // final pathStr = "lib/resources/tp_hex_soldier_data.txt";
+  //   // final rtfText = await rootBundle.loadString(pathStr);
 
-    // 读取文件内容
-    final rtfText = await file.readAsString();
-    return rtfText;
-  }
+  //   // 读取文件内容
+  //   final rtfText = await file.readAsString();
+  //   return rtfText;
+  // }
 
   _decodeData() async {
     final rtfText = _contentText;
@@ -131,7 +131,7 @@ class _MainState extends State<MainPage> {
 
     if (match == null) {
       print('❌ 未找到十六进制数据');
-      _showAlert('数据错误');
+      _showSnackBar('数据错误');
       return;
     }
 
@@ -281,7 +281,7 @@ class _MainState extends State<MainPage> {
 
     if (soldiersData.isEmpty) {
       print('❌ 未找到士兵数据');
-      _showAlert('未找到士兵数据');
+      _showSnackBar('未找到士兵数据');
       return;
     }
 
@@ -334,65 +334,90 @@ class _MainState extends State<MainPage> {
     );
   }
 
-  _saveToDesktop(String content) async {
-    if (_outputText.isEmpty) {
-      _showAlert('没有数据可以保存，请先转码');
-      return;
-    }
+  // _saveToDesktop(String content) async {
+  //   if (_outputText.isEmpty) {
+  //     _showSnackBar('没有数据可以保存，请先转码');
+  //     return;
+  //   }
 
-    // 获取桌面路径（macOS 特定方式）
-    String desktopDir = '/Users/shijianyu/Desktop/ty';
+  //   // 获取桌面路径（macOS 特定方式）
+  //   String desktopDir = '/Users/shijianyu/Desktop/ty';
 
-    /// 获取当前时间戳
-    String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
-    final String fileName = '士兵数据_$timestamp.txt';
+  //   /// 获取当前时间戳
+  //   String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+  //   final String fileName = '士兵数据_$timestamp.txt';
 
-    // 读取文件路径
-    final pathStr = '$desktopDir/$fileName';
-    final file = File(pathStr);
+  //   // 读取文件路径
+  //   final pathStr = '$desktopDir/$fileName';
+  //   final file = File(pathStr);
 
-    // 写入文件内容
-    await file.writeAsString(content);
-    print('文件已保存到桌面: $pathStr');
+  //   // 写入文件内容
+  //   await file.writeAsString(content);
+  //   print('文件已保存到桌面: $pathStr');
 
-    // final timestamp =
-    //     DateTime.now().toString().replaceAll(RegExp(r'[^0-9]'), '');
-    // final matchRegExp = RegExp(r"ty/([^/_]+)_hex").firstMatch(pathStr);
-    // final resultMatch = matchRegExp?.group(1);
+  //   // final timestamp =
+  //   //     DateTime.now().toString().replaceAll(RegExp(r'[^0-9]'), '');
+  //   // final matchRegExp = RegExp(r"ty/([^/_]+)_hex").firstMatch(pathStr);
+  //   // final resultMatch = matchRegExp?.group(1);
 
-    // final outputPath = '$desktopDir/${resultMatch}_士兵数据_$timestamp.txt';
-    // final outputFile = File(outputPath);
-    // await outputFile.writeAsString(buffer.toString(), flush: true);
-    // print('✅ JSON 已保存到桌面: $outputPath');
+  //   // final outputPath = '$desktopDir/${resultMatch}_士兵数据_$timestamp.txt';
+  //   // final outputFile = File(outputPath);
+  //   // await outputFile.writeAsString(buffer.toString(), flush: true);
+  //   // print('✅ JSON 已保存到桌面: $outputPath');
+  // }
+
+  _showSnackBar(String content) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        padding: EdgeInsets.all(15.0),
+        content: Text(
+          content,
+          textAlign: TextAlign.center, // 居中显示文字
+          maxLines: 3, // 最多3行
+          overflow: TextOverflow.ellipsis, // 超出显示省略号
+          style: TextStyle(
+            fontSize: 15.0,
+            color: Colors.white,
+          ),
+        ),
+        duration: Duration(seconds: 2),
+        behavior: SnackBarBehavior.floating, // 浮动显示
+        backgroundColor: Colors.black87,
+        margin: EdgeInsets.symmetric(horizontal: 50, vertical: 20), // 控制宽度
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8), // 圆角
+        ),
+      ),
+    );
   }
 
-  _showAlert(String content) {
-    showDialog(
-        context: context,
-        builder: (_) {
-          return AlertDialog(
-            backgroundColor: Colors.white,
-            title: Text(
-              '提示',
-              style: TextStyle(fontSize: 15),
-            ),
-            content: Text(
-              content,
-              style: TextStyle(fontSize: 17),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text(
-                  '确定',
-                ),
-              ),
-            ],
-          );
-        });
-  }
+  // _showAlert(String content) {
+  //   showDialog(
+  //       context: context,
+  //       builder: (_) {
+  //         return AlertDialog(
+  //           backgroundColor: Colors.white,
+  //           title: Text(
+  //             '提示',
+  //             style: TextStyle(fontSize: 15),
+  //           ),
+  //           content: Text(
+  //             content,
+  //             style: TextStyle(fontSize: 17),
+  //           ),
+  //           actions: [
+  //             TextButton(
+  //               onPressed: () {
+  //                 Navigator.of(context).pop();
+  //               },
+  //               child: Text(
+  //                 '确定',
+  //               ),
+  //             ),
+  //           ],
+  //         );
+  //       });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -400,9 +425,13 @@ class _MainState extends State<MainPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('hlsg士兵转码工具v1.2'),
+        title: Text('士兵转码工具v1.2'),
       ),
-      body: _mainWidget(),
+      body: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: _mainWidget(),
+      ),
     );
   }
 
@@ -520,10 +549,8 @@ class _MainState extends State<MainPage> {
         // ),
         Row(
           children: [
-            Container(
-              width: 100,
-              height: 50,
-              margin: EdgeInsets.only(top: 10.0),
+            Padding(
+              padding: EdgeInsets.only(top: 10.0, right: 10.0),
               child: TextButton(
                 child: Text(
                   '选择文件',
@@ -533,26 +560,20 @@ class _MainState extends State<MainPage> {
                   ),
                 ),
                 style: ButtonStyle(
-                  padding: MaterialStateProperty.all(
-                    EdgeInsets.only(
-                      top: 10.0,
-                      bottom: 10.0,
-                    ),
+                  padding: WidgetStateProperty.all(
+                    EdgeInsets.all(15.0),
                   ),
-                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                  shape: WidgetStateProperty.all(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5))),
-                  backgroundColor: MaterialStateProperty.all(Colors.grey),
+                  backgroundColor: WidgetStateProperty.all(Colors.grey),
                 ),
                 onPressed: () {
                   _selectFile();
                 },
               ),
             ),
-            SizedBox(width: 10),
-            Container(
-              width: 100,
-              height: 50,
-              margin: EdgeInsets.only(top: 10.0),
+            Padding(
+              padding: EdgeInsets.only(top: 10.0, right: 10.0),
               child: TextButton(
                 child: Text(
                   '转码',
@@ -562,22 +583,19 @@ class _MainState extends State<MainPage> {
                   ),
                 ),
                 style: ButtonStyle(
-                  padding: MaterialStateProperty.all(
-                    EdgeInsets.only(
-                      top: 10.0,
-                      bottom: 10.0,
-                    ),
+                  padding: WidgetStateProperty.all(
+                    EdgeInsets.all(15.0),
                   ),
-                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                  shape: WidgetStateProperty.all(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5))),
-                  backgroundColor: MaterialStateProperty.all(Colors.blue),
+                  backgroundColor: WidgetStateProperty.all(Colors.blue),
                 ),
                 onPressed: () {
-                  if (_contentText.isEmpty) {
-                    _showAlert('请输入数据');
-                    return;
+                  if (_contentText.isNotEmpty) {
+                    _decodeData();
+                  } else {
+                    _showSnackBar('没有数据可以转码，请先粘贴或选择文件');
                   }
-                  _decodeData();
                 },
               ),
             ),
@@ -607,18 +625,43 @@ class _MainState extends State<MainPage> {
             //     ),
             //     onPressed: () {
             //       if (_contentText.isEmpty) {
-            //         _showAlert('请输入数据');
+            //         _showSnackBar('请输入数据');
             //         return;
             //       }
             //       _saveToDesktop(_outputText);
             //     },
             //   ),
             // ),
-            SizedBox(width: 10),
-            Container(
-              width: 100,
-              height: 50,
-              margin: EdgeInsets.only(top: 10.0),
+            Padding(
+              padding: EdgeInsets.only(top: 10.0, right: 10.0),
+              child: TextButton(
+                child: Text(
+                  '复制',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 17,
+                  ),
+                ),
+                style: ButtonStyle(
+                  padding: WidgetStateProperty.all(
+                    EdgeInsets.all(15.0),
+                  ),
+                  shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5))),
+                  backgroundColor: WidgetStateProperty.all(Colors.green),
+                ),
+                onPressed: () {
+                  if (_outputText.isNotEmpty) {
+                    Clipboard.setData(ClipboardData(text: _outputText));
+                    _showSnackBar('已复制到剪贴板');
+                  } else {
+                    _showSnackBar('没有数据可以复制，请先转码');
+                  }
+                },
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 10.0, right: 10.0),
               child: TextButton(
                 child: Text(
                   '清除',
@@ -628,15 +671,12 @@ class _MainState extends State<MainPage> {
                   ),
                 ),
                 style: ButtonStyle(
-                  padding: MaterialStateProperty.all(
-                    EdgeInsets.only(
-                      top: 10.0,
-                      bottom: 10.0,
-                    ),
+                  padding: WidgetStateProperty.all(
+                    EdgeInsets.all(15.0),
                   ),
-                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                  shape: WidgetStateProperty.all(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5))),
-                  backgroundColor: MaterialStateProperty.all(Colors.red),
+                  backgroundColor: WidgetStateProperty.all(Colors.red),
                 ),
                 onPressed: () {
                   _inputController.clear();
