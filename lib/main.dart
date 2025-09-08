@@ -400,7 +400,7 @@ class _MainState extends State<MainPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('hlsg数据1.2'),
+        title: Text('hlsg士兵转码工具v1.2'),
       ),
       body: _mainWidget(),
     );
@@ -444,9 +444,81 @@ class _MainState extends State<MainPage> {
             ),
           ),
         ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        // Column(
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   crossAxisAlignment: CrossAxisAlignment.start,
+        //   children: [
+        // Row(
+        //   children: [
+        //     Container(
+        //       // width: 100,
+        //       height: 50,
+        //       margin: EdgeInsets.only(top: 10.0),
+        //       child: TextButton(
+        //         child: Text(
+        //           '读取桌面文件(仅Mac)',
+        //           style: TextStyle(
+        //             color: Colors.white,
+        //             fontSize: 17,
+        //           ),
+        //         ),
+        //         style: ButtonStyle(
+        //           padding: MaterialStateProperty.all(
+        //             EdgeInsets.all(10.0),
+        //           ),
+        //           shape: MaterialStateProperty.all(RoundedRectangleBorder(
+        //               borderRadius: BorderRadius.circular(5))),
+        //           backgroundColor: MaterialStateProperty.all(Colors.orange),
+        //         ),
+        //         onPressed: () async {
+        //           String? _fileStr = await _readFileString(_fileNameText);
+
+        //           if (_fileStr != null) {
+        //             _inputController.text = _fileStr;
+        //             _contentText = _fileStr;
+        //             if (mounted) {
+        //               setState(() {});
+        //             }
+        //           }
+        //         },
+        //       ),
+        //     ),
+        //     Container(
+        //       width: 150,
+        //       height: 50,
+        //       padding: EdgeInsets.all(10.0),
+        //       margin: EdgeInsets.only(left: 10.0, top: 10),
+        //       decoration: BoxDecoration(
+        //         color: Colors.white,
+        //         border: Border.all(
+        //           color: Color(0xFFB3B3B3),
+        //           width: 0.5,
+        //         ),
+        //       ),
+        //       child: TextField(
+        //         maxLines: 1,
+        //         autofocus: true,
+        //         decoration: InputDecoration.collapsed(
+        //           hintText: '文件名称',
+        //           hintStyle: TextStyle(
+        //             fontSize: 17,
+        //             color: Color(0xFFB3B3B3),
+        //           ),
+        //         ),
+        //         onChanged: (val) {
+        //           if (mounted) {
+        //             setState(() {
+        //               _fileNameText = val;
+        //             });
+        //           }
+        //         },
+        //       ),
+        //     ),
+        //   ],
+        // ),
+        //   ],
+        // ),
+        Row(
           children: [
             Container(
               width: 100,
@@ -476,78 +548,7 @@ class _MainState extends State<MainPage> {
                 },
               ),
             ),
-            Row(
-              children: [
-                Container(
-                  // width: 100,
-                  height: 50,
-                  margin: EdgeInsets.only(top: 10.0),
-                  child: TextButton(
-                    child: Text(
-                      '读取桌面文件(仅Mac)',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 17,
-                      ),
-                    ),
-                    style: ButtonStyle(
-                      padding: MaterialStateProperty.all(
-                        EdgeInsets.all(10.0),
-                      ),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5))),
-                      backgroundColor: MaterialStateProperty.all(Colors.orange),
-                    ),
-                    onPressed: () async {
-                      String? _fileStr = await _readFileString(_fileNameText);
-
-                      if (_fileStr != null) {
-                        _inputController.text = _fileStr;
-                        _contentText = _fileStr;
-                        if (mounted) {
-                          setState(() {});
-                        }
-                      }
-                    },
-                  ),
-                ),
-                Container(
-                  width: 150,
-                  height: 50,
-                  padding: EdgeInsets.all(10.0),
-                  margin: EdgeInsets.only(left: 10.0, top: 10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(
-                      color: Color(0xFFB3B3B3),
-                      width: 0.5,
-                    ),
-                  ),
-                  child: TextField(
-                    maxLines: 1,
-                    autofocus: true,
-                    decoration: InputDecoration.collapsed(
-                      hintText: '文件名称',
-                      hintStyle: TextStyle(
-                        fontSize: 17,
-                        color: Color(0xFFB3B3B3),
-                      ),
-                    ),
-                    onChanged: (val) {
-                      if (mounted) {
-                        setState(() {
-                          _fileNameText = val;
-                        });
-                      }
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-        Row(
-          children: [
+            SizedBox(width: 10),
             Container(
               width: 100,
               height: 50,
@@ -580,39 +581,39 @@ class _MainState extends State<MainPage> {
                 },
               ),
             ),
-            SizedBox(width: 10),
-            Container(
-              width: 130,
-              height: 50,
-              margin: EdgeInsets.only(top: 10.0),
-              child: TextButton(
-                child: Text(
-                  '保存到桌面',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 17,
-                  ),
-                ),
-                style: ButtonStyle(
-                  padding: MaterialStateProperty.all(
-                    EdgeInsets.only(
-                      top: 10.0,
-                      bottom: 10.0,
-                    ),
-                  ),
-                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5))),
-                  backgroundColor: MaterialStateProperty.all(Colors.blue),
-                ),
-                onPressed: () {
-                  if (_contentText.isEmpty) {
-                    _showAlert('请输入数据');
-                    return;
-                  }
-                  _saveToDesktop(_outputText);
-                },
-              ),
-            ),
+            // SizedBox(width: 10),
+            // Container(
+            //   width: 130,
+            //   height: 50,
+            //   margin: EdgeInsets.only(top: 10.0),
+            //   child: TextButton(
+            //     child: Text(
+            //       '保存到桌面',
+            //       style: TextStyle(
+            //         color: Colors.white,
+            //         fontSize: 17,
+            //       ),
+            //     ),
+            //     style: ButtonStyle(
+            //       padding: MaterialStateProperty.all(
+            //         EdgeInsets.only(
+            //           top: 10.0,
+            //           bottom: 10.0,
+            //         ),
+            //       ),
+            //       shape: MaterialStateProperty.all(RoundedRectangleBorder(
+            //           borderRadius: BorderRadius.circular(5))),
+            //       backgroundColor: MaterialStateProperty.all(Colors.blue),
+            //     ),
+            //     onPressed: () {
+            //       if (_contentText.isEmpty) {
+            //         _showAlert('请输入数据');
+            //         return;
+            //       }
+            //       _saveToDesktop(_outputText);
+            //     },
+            //   ),
+            // ),
             SizedBox(width: 10),
             Container(
               width: 100,
