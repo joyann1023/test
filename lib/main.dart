@@ -164,6 +164,8 @@ class _MainState extends State<MainPage> {
           });
 
           print('result: $result');
+          log('result: $result');
+
           var resultJson = jsonEncode(result);
           log('resultJson: $resultJson');
 
@@ -223,24 +225,43 @@ class _MainState extends State<MainPage> {
               final armType = armMapping[arm] ?? '未知';
 
               // 只保存特定的字段
+              // final extractedData = {
+              //   'level_等级': level,
+              //   'quality_品质': qualityColor,
+              //   'arm_兵种': armType,
+              //   'power_qualification_力量资质': powerQualification,
+              //   'physique_qualification_体质资质': physiqueQualification,
+              //   'agile_qualification_敏捷资质': agileQualification,
+              //   'potential_qualification_潜力资质': potentialQualification,
+              //   '力量资质_初始': basePowerQualification,
+              //   '体质资质_初始': basePhysiqueQualification,
+              //   '敏捷资质_初始': baseAgileQualification,
+              //   '潜力资质_初始': basePotentialQualification,
+              //   'intelligenct_qualification_慧根资质': intelligenctQualification,
+              //   'power_力量': power,
+              //   'physique_体质': physique,
+              //   'agile_敏捷': agile,
+              //   'intelligenct_慧根': intelligenct,
+              //   'count_剩余指点次数': giveCount,
+              // };
               final extractedData = {
-                'level_等级': level,
-                'quality_品质': qualityColor,
-                'arm_兵种': armType,
-                'power_qualification_力量资质': powerQualification,
-                'physique_qualification_体质资质': physiqueQualification,
-                'agile_qualification_敏捷资质': agileQualification,
-                'potential_qualification_潜力资质': potentialQualification,
+                '等级': level,
+                '品质': qualityColor,
+                '兵种': armType,
                 '力量资质_初始': basePowerQualification,
                 '体质资质_初始': basePhysiqueQualification,
                 '敏捷资质_初始': baseAgileQualification,
                 '潜力资质_初始': basePotentialQualification,
-                'intelligenct_qualification_慧根资质': intelligenctQualification,
-                'power_力量': power,
-                'physique_体质': physique,
-                'agile_敏捷': agile,
-                'intelligenct_慧根': intelligenct,
-                'count_剩余指点次数': giveCount,
+                '力量资质': powerQualification,
+                '体质资质': physiqueQualification,
+                '敏捷资质': agileQualification,
+                '潜力资质': potentialQualification,
+                '###慧根资质###': intelligenctQualification,
+                '力量': power,
+                '体质': physique,
+                '敏捷': agile,
+                '***慧根***': intelligenct,
+                '剩余指点次数': giveCount,
               };
 
               // 添加到士兵数据列表
@@ -275,8 +296,11 @@ class _MainState extends State<MainPage> {
     // 对士兵数据进行排序
     soldiersData.sort((a, b) {
       // 获取颜色的排序值
-      int? aQuality = colorPriority[a['quality_品质']];
-      int? bQuality = colorPriority[b['quality_品质']];
+      // int? aQuality = colorPriority[a['quality_品质']];
+      // int? bQuality = colorPriority[b['quality_品质']];
+
+      int? aQuality = colorPriority[a['品质']];
+      int? bQuality = colorPriority[b['品质']];
 
       // 比较颜色排序值
       return aQuality!.compareTo(bQuality!);
@@ -290,17 +314,6 @@ class _MainState extends State<MainPage> {
       buffer.writeln(jsonString);
       buffer.writeln('');
     });
-
-    // final timestamp =
-    //     DateTime.now().toString().replaceAll(RegExp(r'[^0-9]'), '');
-    // final matchRegExp = RegExp(r"ty/([^/_]+)_hex").firstMatch(pathStr);
-    // final resultMatch = matchRegExp?.group(1);
-
-    // final outputPath = '$desktopDir/${resultMatch}_士兵数据_$timestamp.txt';
-    // final outputFile = File(outputPath);
-    // await outputFile.writeAsString(buffer.toString(), flush: true);
-
-    // print('✅ JSON 已保存到桌面: $outputPath');
 
     _outputText = buffer.toString();
     print('士兵数据: $_outputText');
@@ -319,6 +332,38 @@ class _MainState extends State<MainPage> {
       duration: Duration(milliseconds: 300),
       curve: Curves.easeOut,
     );
+  }
+
+  _saveToDesktop(String content) async {
+    if (_outputText.isEmpty) {
+      _showAlert('没有数据可以保存，请先转码');
+      return;
+    }
+
+    // 获取桌面路径（macOS 特定方式）
+    String desktopDir = '/Users/shijianyu/Desktop/ty';
+
+    /// 获取当前时间戳
+    String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+    final String fileName = '士兵数据_$timestamp.txt';
+
+    // 读取文件路径
+    final pathStr = '$desktopDir/$fileName';
+    final file = File(pathStr);
+
+    // 写入文件内容
+    await file.writeAsString(content);
+    print('文件已保存到桌面: $pathStr');
+
+    // final timestamp =
+    //     DateTime.now().toString().replaceAll(RegExp(r'[^0-9]'), '');
+    // final matchRegExp = RegExp(r"ty/([^/_]+)_hex").firstMatch(pathStr);
+    // final resultMatch = matchRegExp?.group(1);
+
+    // final outputPath = '$desktopDir/${resultMatch}_士兵数据_$timestamp.txt';
+    // final outputFile = File(outputPath);
+    // await outputFile.writeAsString(buffer.toString(), flush: true);
+    // print('✅ JSON 已保存到桌面: $outputPath');
   }
 
   _showAlert(String content) {
@@ -355,7 +400,7 @@ class _MainState extends State<MainPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('hlsg士兵数据1.2'),
+        title: Text('hlsg数据1.2'),
       ),
       body: _mainWidget(),
     );
@@ -532,6 +577,39 @@ class _MainState extends State<MainPage> {
                     return;
                   }
                   _decodeData();
+                },
+              ),
+            ),
+            SizedBox(width: 10),
+            Container(
+              width: 130,
+              height: 50,
+              margin: EdgeInsets.only(top: 10.0),
+              child: TextButton(
+                child: Text(
+                  '保存到桌面',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 17,
+                  ),
+                ),
+                style: ButtonStyle(
+                  padding: MaterialStateProperty.all(
+                    EdgeInsets.only(
+                      top: 10.0,
+                      bottom: 10.0,
+                    ),
+                  ),
+                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5))),
+                  backgroundColor: MaterialStateProperty.all(Colors.blue),
+                ),
+                onPressed: () {
+                  if (_contentText.isEmpty) {
+                    _showAlert('请输入数据');
+                    return;
+                  }
+                  _saveToDesktop(_outputText);
                 },
               ),
             ),
